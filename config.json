@@ -1,14 +1,69 @@
 {
-  "title": "Project title goes here",
-  "headline": "The one sentence someone should remember",
-  "description": "One sentence, under 160 characters, for search results and link previews.",
-  "site_url": "https://example.manhattan.institute",
-  "source_name": "Name of the dataset",
-  "source_url": "https://example.org/the-dataset",
-  "method_note": "What was counted, what was excluded, and what these numbers cannot show.",
-  "author": "Your name",
+  "title": "NYC Department of Investigation Enforcement Actions",
+  "headline": "A decade of NYC Department of Investigation cases, sorted by what people were accused of",
+  "description": "Every DOI press release from 2016 to 2026, tagged by offense category, case stage, and dollars stolen and recovered.",
+  "site_url": "https://bnmont.github.io/nycdoi",
+  "source_name": "NYC Department of Investigation press release archive",
+  "source_url": "https://www.nyc.gov/site/doi/newsroom/press-release-archives.page",
+  "method_note": "Each row is one DOI press release, not one defendant: a release naming five people counts once. Categories are assigned by matching the phrases in the rulebook below against the release title, first match winning, so a case charging both bribery and fraud is filed under bribery alone. Dollar figures are read out of the release PDF and are reported only when the surrounding words identify them as an amount stolen or recovered; salary figures, which DOI states in most enforcement releases, are excluded. Many releases state no figure at all, so the dollar columns are incomplete by nature and should never be summed as a total loss to the city. DOI reports, statements, announcements and press-conference remarks are kept in the data but marked as such, because they are not enforcement actions.",
+  "author": "Brittany Montgomery",
   "accent": "#14366b",
-  "source_data_url": null,
-  "value_column": "value",
-  "label_column": "label"
+
+  "years_back": 10,
+  "refresh_months": 3,
+
+  "label_column": "category",
+  "value_column": "releases",
+
+  "_comment_record_types": "Checked before categories. Anything unmatched is treated as an enforcement action, so these rules must be specific enough not to swallow one. Note that 'DOI Investigation Leads to Arrest of...' is an enforcement action, which is why no rule here matches the bare word 'investigation'.",
+  "record_types": [
+    {"name": "Commissioner remarks", "keywords": ["remarks of", "remarks at", "testimony of", "speech by", "marks first day"]},
+    {"name": "Agency announcement", "keywords": ["appoints", "launches", "year-end statistics", "yearend", "by the numbers", "closes out", "legislature passes", "notice of intent", "begins review", "letter to new york city council", "letter to the new york city council", "public portal"]},
+    {"name": "DOI report", "keywords": ["issues report", "issues two reports", "issues its", "doi report", "report on", "report finding", "report examines", "an analysis of", "recommendations to", "recommendations for", "annual report", "statement of findings", "examination finds", "finds flaws", "finds compliance", "releases investigation report", "releases final investigation", "releases results of investigation", "doi's investigation into", "doi referral"]},
+    {"name": "DOI statement", "keywords": ["doi statement", "statement from doi", "statement of doi", "commissioner statement", "department of investigation statement", "updates the public", "release statement"]}
+  ],
+
+  "_comment_categories": "First match wins, so order matters: the more specific category goes above the more general one. Matching is case-insensitive against the release title. The last entry, 'Fraud, other', is deliberately broad and catches what the specific rules miss.",
+  "categories": [
+    {"name": "Contraband smuggling", "keywords": ["contraband", "smuggl", "into the jail", "into jail", "makeshift weapon"]},
+    {"name": "Sexual misconduct", "keywords": ["sexual abuse", "sexually abus", "sexual misconduct", "forcible touching", "sexual assault", "sexual harassment", "groping", "exposing himself", "exposing herself", "intercourse with"]},
+    {"name": "Deaths and reckless endangerment", "keywords": ["negligent homicide", "manslaughter", "reckless endangerment", "death of", "death in custody", "fatal", "suicide attempt", "failure to act", "wall collapse", "building collapse", "scaffolding collapse", "structure collapse", "explosion", "lost his right hand"]},
+    {"name": "Racketeering and violent crime", "keywords": ["racketeering", "organized crime", "gang", "murder", "shooting", "slashing", "stabbing", "firearm", "criminal possession of a weapon"]},
+    {"name": "Assault and cover-ups", "keywords": ["assault", "excessive force", "cover-up", "cover up", "beating", "use of force", "kick", "hitting", "strip search", "pepper spray", "abusive calls"]},
+    {"name": "Bribery and kickbacks", "keywords": ["bribe", "bribery", "kickback", "gratuity", "pay-to-play", "in exchange for", "took cash"]},
+    {"name": "Extortion", "keywords": ["extortion", "extort"]},
+    {"name": "Tenant harassment and eviction", "keywords": ["tenant harassment", "harassing rent-regulated", "harassing tenants", "unlawful eviction", "landlord"]},
+    {"name": "Workers' compensation fraud", "keywords": ["workers' compensation", "workers compensation", "phony documentation for medical", "medical treatment"]},
+    {"name": "Benefits fraud", "keywords": ["public assistance", "snap", "section 8", "medicaid", "unemployment", "rental subsid", "housing subsid", "benefits fraud", "government benefits", "food stamp", "affordable housing"]},
+    {"name": "Forgery and fake credentials", "keywords": ["falsif", "forged", "forging", "forgery", "phony", "fake", "counterfeit", "false permit", "false information", "false statement", "false filing", "training certificate", "safety card", "placard", "perjury", "lying", "lied", "misrepresentation"]},
+    {"name": "Obstruction and tampering", "keywords": ["evidence tampering", "witness tampering", "destruction of evidence", "tampering", "obstruct"]},
+    {"name": "Drug offenses", "keywords": ["narcotic", "cocaine", "heroin", "fentanyl", "oxycodone", "marijuana", "drug distribution", "drug sales", "illegally distributing", "illegal distribution", "controlled substance", "on drug"]},
+    {"name": "Contracting and procurement fraud", "keywords": ["bid-rigging", "bid rigging", "procurement", "school construction authority", "vendor", "sham", "no-bid", "contract", "micro-purchase"]},
+    {"name": "Payroll and wage abuse", "keywords": ["overtime", "timekeeping", "sick leave", "wage fraud", "payroll", "ghost employee", "time and leave", "in wages", "underpaid", "withheld wages", "denied fair pay", "absence from his post", "absence from her post"]},
+    {"name": "Embezzlement", "keywords": ["embezzl", "divert", "misappropriat"]},
+    {"name": "Tax offenses", "keywords": ["tax fraud", "tax evasion", "evading taxes", "tax charge"]},
+    {"name": "Conflict of interest", "keywords": ["conflict of interest", "misuse of position", "misusing", "unauthorized"]},
+    {"name": "Unlicensed operation", "keywords": ["unlicensed", "without a license", "illegally hung", "improperly working", "revoke"]},
+    {"name": "Official misconduct", "keywords": ["official misconduct", "misconduct"]},
+    {"name": "Theft", "keywords": ["steal", "stole", "theft", "larceny", "shoplift", "not reporting over"]},
+    {"name": "Fraud, other", "keywords": ["fraud", "defraud", "scheme", "scam", "corruption", "false"]}
+  ],
+
+  "_comment_stages": "Where the case had got to when the release was issued. First match wins, so the later stages are listed first.",
+  "stages": [
+    {"name": "Sentenced", "keywords": ["sentenced", "sentencing", "prison sentence", "to be sentenced", "jail sentence"]},
+    {"name": "Convicted", "keywords": ["convicted", "conviction", "found guilty", "jury convicts"]},
+    {"name": "Pleaded guilty", "keywords": ["pleads guilty", "pleaded guilty", "guilty plea", "plead guilty", "enters guilty plea", "pleads"]},
+    {"name": "Indicted", "keywords": ["indicted", "indictment"]},
+    {"name": "Charged or arrested", "keywords": ["charged", "arrest", "criminal complaint", "charges"]}
+  ],
+
+  "_comment_money": "How a dollar figure in the release text is interpreted. A figure whose surrounding words match 'exclude' is ignored entirely; this is what keeps a defendant's salary, or an agency-wide savings total, from being reported as money stolen.",
+  "money_rules": {
+    "exclude": ["salary", "annual base", "base pay", "earns", "compensation", "pension", "per year", "annually", "budget of", "worth", "valued at", "value of", "street value", "in contracts", "in public contracts", "contracts with", "awarded", "payments to", "revenue of", "grossed", "in income", "premium", "cost savings", "financial recoveries", "caseload", "bail", "bond of", "hid more than", "hid over", "seeking", "since 20", "over the last", "my office has", "around the state", "to date", "in total since"],
+    "stolen": ["stole", "stolen", "steal", "theft", "defraud", "fraudulently", "divert", "embezzl", "misappropriat", "obtain", "scheme", "bilk", "loss", "took", "unlawfully received", "improperly received", "overbilled", "overcharg", "accepting", "received from"],
+    "recouped": ["restitution", "forfeit", "forfeiture", "recovered", "recoup", "repaid", "repay", "returned to the city", "disgorge", "penalty", "fine of", "must pay", "settlement", "judgment of", "secures $", "secured $", "deliver $", "delivers $", "delivered $"]
+  },
+
+  "source_data_url": null
 }

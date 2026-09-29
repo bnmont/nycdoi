@@ -37,6 +37,9 @@ jobs:
 
       - run: pip install -r requirements.txt
 
+      - name: Check the money rules still hold
+        run: python tests/test_money.py
+
       - name: Run the pipeline
         env:
           # Only needed if your pipeline calls an API. Set it under

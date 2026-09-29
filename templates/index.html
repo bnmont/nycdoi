@@ -38,25 +38,44 @@
   header{border-bottom:2px solid var(--ink); padding-bottom:1rem; margin-bottom:2rem}
   h1{font-size:clamp(1.8rem,5vw,2.6rem); line-height:1.1; margin:0 0 .5rem}
   .standfirst{margin:0; color:var(--ink-2); max-width:34rem}
-  h2{font-size:1.2rem; margin:2.5rem 0 .75rem}
+  h2{font-size:1.2rem; margin:2.5rem 0 .25rem}
+  .note{margin:.1rem 0 1rem; font-size:.88rem; color:var(--ink-2); max-width:36rem}
   a{color:var(--accent)}
   @media (prefers-color-scheme: dark){ a{color:#9fc0f2} }
 
-  .chart{margin:1.5rem 0; display:grid; gap:.4rem}
-  .row{display:grid; grid-template-columns:minmax(6rem,10rem) 1fr auto; gap:.6rem; align-items:center}
-  .row .name{font-size:.9rem; color:var(--ink-2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
-  .track{background:var(--bar); height:1.4rem; position:relative}
-  .fill{background:var(--accent); height:100%}
-  .num{font-variant-numeric:tabular-nums; font-size:.9rem}
+  /* Headline numbers: the four figures worth remembering. */
+  .tiles{
+    display:grid; gap:.75rem; margin:1.75rem 0 .5rem;
+    grid-template-columns:repeat(auto-fit,minmax(9rem,1fr));
+  }
+  .tile{border-top:2px solid var(--ink); padding-top:.5rem}
+  .tile .n{font-size:1.7rem; line-height:1.1; font-variant-numeric:tabular-nums}
+  .tile .k{font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-2)}
+  .tile .q{font-size:.76rem; color:var(--ink-2); margin-top:.15rem}
 
-  .scroll{overflow-x:auto; -webkit-overflow-scrolling:touch}
-  table{border-collapse:collapse; width:100%; font-size:.92rem; min-width:30rem}
-  th,td{text-align:left; padding:.5rem .7rem; border-bottom:1px solid var(--rule)}
-  th{font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-2)}
-  td:not(:first-child){font-variant-numeric:tabular-nums}
+  /* One series, one hue: bars carry magnitude, never identity. */
+  .chart{margin:1.25rem 0; display:grid; gap:2px}
+  .row{display:grid; grid-template-columns:minmax(7rem,13rem) 1fr auto; gap:.6rem; align-items:center}
+  .row .name{font-size:.9rem; color:var(--ink-2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .track{background:var(--bar); height:1.35rem; position:relative; border-radius:2px}
+  .fill{background:var(--accent); height:100%; border-radius:0 4px 4px 0; min-width:2px}
+  .row:hover .fill{filter:brightness(1.12)}
+  .num{font-variant-numeric:tabular-nums; font-size:.9rem; min-width:2.5rem; text-align:right}
+
+  .scroll{overflow-x:auto; -webkit-overflow-scrolling:touch; max-height:34rem; overflow-y:auto}
+  table{border-collapse:collapse; width:100%; font-size:.88rem; min-width:44rem}
+  th,td{text-align:left; padding:.45rem .6rem; border-bottom:1px solid var(--rule); vertical-align:top}
+  th{
+    font-size:.72rem; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-2);
+    position:sticky; top:0; background:var(--paper); z-index:1;
+  }
+  td.n{font-variant-numeric:tabular-nums; text-align:right; white-space:nowrap}
+  td.d{white-space:nowrap; color:var(--ink-2)}
+  .tag{font-size:.74rem; color:var(--ink-2); white-space:nowrap}
+  tr:hover td{background:var(--bar)}
 
   footer{margin-top:3.5rem; border-top:1px solid var(--rule); padding-top:1rem; font-size:.88rem; color:var(--ink-2)}
-  footer p{margin:.4rem 0; max-width:34rem}
+  footer p{margin:.4rem 0; max-width:38rem}
   .dl{display:inline-block; margin-top:.5rem; font-size:.9rem}
 </style>
 </head>
@@ -68,10 +87,42 @@
     <p class="standfirst">{{ cfg.description }}</p>
   </header>
 
-  <h2>{{ value_col|title }} by {{ label_col }}</h2>
+  <div class="tiles">
+    <div class="tile">
+      <div class="n">{{ '{:,}'.format(meta.enforcement_actions) }}</div>
+      <div class="k">Enforcement actions</div>
+    </div>
+    <div class="tile">
+      <div class="n">{{ meta.categories }}</div>
+      <div class="k">Categories</div>
+    </div>
+    <div class="tile">
+      <div class="n">{{ total_stolen or '—' }}</div>
+      <div class="k">Stolen, where stated</div>
+      <div class="q">Sum of the {{ meta.with_amount_stolen }} releases that give a figure — not a total loss to the city</div>
+    </div>
+    <div class="tile">
+      <div class="n">{{ total_recouped or '—' }}</div>
+      <div class="k">Recovered, where stated</div>
+      <div class="q">Sum of the {{ meta.with_amount_recouped }} releases that give a figure</div>
+    </div>
+  </div>
+  <p class="note">
+    Most releases state no dollar figure at all, so the two money totals above cover
+    {{ meta.with_amount_stolen }} and {{ meta.with_amount_recouped }} of
+    {{ '{:,}'.format(meta.enforcement_actions) }} enforcement actions. They are a floor on
+    what was reported, not a measure of what was taken or returned.
+  </p>
+
+  <h2>Enforcement actions by category</h2>
+  <p class="note">
+    Counts press releases announcing an arrest, charge, indictment, plea, conviction
+    or sentence. DOI reports, statements and press-conference remarks are excluded
+    here; they appear in the table below marked as such.
+  </p>
   <div class="chart">
-    {% for r in rows[:25] %}
-    <div class="row">
+    {% for r in chart_rows %}
+    <div class="row" title="{{ r[label_col] }}: {{ r[value_col] }} enforcement actions">
       <span class="name">{{ r[label_col] }}</span>
       <span class="track"><span class="fill" style="width: {{ (r[value_col] / max_value * 100)|round(1) }}%"></span></span>
       <span class="num">{{ '{:,}'.format(r[value_col]) }}</span>
@@ -79,25 +130,48 @@
     {% endfor %}
   </div>
 
-  <h2>The data</h2>
+  <h2>Every release</h2>
+  <p class="note">
+    {{ '{:,}'.format(meta.rows) }} releases, {{ meta.first_date }} to {{ meta.last_date }}.
+    Dollar figures appear only where the release states them; a blank means no figure
+    was reported, not that nothing was taken. Titles link to the original PDF.
+  </p>
   <div class="scroll">
     <table>
       <thead>
-        <tr>{% for c in columns %}<th>{{ c }}</th>{% endfor %}</tr>
+        <tr>
+          <th>Date</th>
+          <th>Category</th>
+          <th>Stage</th>
+          <th>Stolen</th>
+          <th>Recovered</th>
+          <th>Release</th>
+        </tr>
       </thead>
       <tbody>
-        {% for r in rows %}
-        <tr>{% for c in columns %}<td>{{ r[c] }}</td>{% endfor %}</tr>
+        {% for r in releases %}
+        <tr>
+          <td class="d">{{ r.date }}</td>
+          <td>{{ r.category }}{% if r.record_type != 'Enforcement action' %}<br><span class="tag">{{ r.record_type }}</span>{% endif %}</td>
+          <td class="tag">{{ r.stage }}</td>
+          <td class="n"{% if r.amount_stolen_context %} title="{{ r.amount_stolen_context }}"{% endif %}>{{ r.stolen_display }}</td>
+          <td class="n"{% if r.amount_recouped_context %} title="{{ r.amount_recouped_context }}"{% endif %}>{{ r.recouped_display }}</td>
+          <td><a href="{{ r.pdf_url }}">{{ r.title }}</a></td>
+        </tr>
         {% endfor %}
       </tbody>
     </table>
   </div>
 
   <footer>
-    <p><strong>Last updated {{ meta.updated }}.</strong> {{ meta.rows }} records.</p>
+    <p><strong>Last updated {{ meta.updated }}.</strong>
+       {{ '{:,}'.format(meta.rows) }} records — {{ '{:,}'.format(meta.enforcement_actions) }} enforcement
+       actions and {{ meta.other_records }} reports, statements and remarks.
+       {{ meta.with_amount_stolen }} state an amount stolen; {{ meta.with_amount_recouped }} state an amount recovered.</p>
     <p>Source: <a href="{{ meta.source_url }}">{{ meta.source_name }}</a>. {{ cfg.method_note }}</p>
     <p>Compiled by {{ cfg.author }}.</p>
-    <a class="dl" href="data.csv" download>Download the raw data (CSV)</a>
+    <a class="dl" href="data.csv" download>Download the full dataset (CSV)</a> ·
+    <a class="dl" href="categories.csv" download>Category counts (CSV)</a>
   </footer>
 
 </div>
