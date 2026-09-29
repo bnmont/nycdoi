@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>{{ cfg.title }}</title>
+<meta name="description" content="{{ cfg.description }}">
+<link rel="canonical" href="{{ cfg.site_url }}/">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ cfg.site_url }}/">
+<meta property="og:title" content="{{ cfg.headline }}">
+<meta property="og:description" content="{{ cfg.description }}">
+<meta property="og:image" content="{{ cfg.site_url }}/preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<style>
+  :root{
+    --accent: {{ cfg.accent }};
+    --paper:#fff; --ink:#111; --ink-2:#56544e; --rule:#e2e0d9; --bar:#e8e6df;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --paper:#12121a; --ink:#f0eee8; --ink-2:#a8a49a; --rule:#2e2d35; --bar:#24242e; }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font: 17px/1.55 ui-serif, Georgia, "Times New Roman", serif;
+  }
+  .wrap{max-width:52rem; margin:0 auto; padding:3rem 1.25rem 5rem}
+  header{border-bottom:2px solid var(--ink); padding-bottom:1rem; margin-bottom:2rem}
+  h1{font-size:clamp(1.8rem,5vw,2.6rem); line-height:1.1; margin:0 0 .5rem}
+  .standfirst{margin:0; color:var(--ink-2); max-width:34rem}
+  h2{font-size:1.2rem; margin:2.5rem 0 .75rem}
+  a{color:var(--accent)}
+  @media (prefers-color-scheme: dark){ a{color:#9fc0f2} }
+
+  .chart{margin:1.5rem 0; display:grid; gap:.4rem}
+  .row{display:grid; grid-template-columns:minmax(6rem,10rem) 1fr auto; gap:.6rem; align-items:center}
+  .row .name{font-size:.9rem; color:var(--ink-2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .track{background:var(--bar); height:1.4rem; position:relative}
+  .fill{background:var(--accent); height:100%}
+  .num{font-variant-numeric:tabular-nums; font-size:.9rem}
+
+  .scroll{overflow-x:auto; -webkit-overflow-scrolling:touch}
+  table{border-collapse:collapse; width:100%; font-size:.92rem; min-width:30rem}
+  th,td{text-align:left; padding:.5rem .7rem; border-bottom:1px solid var(--rule)}
+  th{font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-2)}
+  td:not(:first-child){font-variant-numeric:tabular-nums}
+
+  footer{margin-top:3.5rem; border-top:1px solid var(--rule); padding-top:1rem; font-size:.88rem; color:var(--ink-2)}
+  footer p{margin:.4rem 0; max-width:34rem}
+  .dl{display:inline-block; margin-top:.5rem; font-size:.9rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>{{ cfg.headline }}</h1>
+    <p class="standfirst">{{ cfg.description }}</p>
+  </header>
+
+  <h2>{{ value_col|title }} by {{ label_col }}</h2>
+  <div class="chart">
+    {% for r in rows[:25] %}
+    <div class="row">
+      <span class="name">{{ r[label_col] }}</span>
+      <span class="track"><span class="fill" style="width: {{ (r[value_col] / max_value * 100)|round(1) }}%"></span></span>
+      <span class="num">{{ '{:,}'.format(r[value_col]) }}</span>
+    </div>
+    {% endfor %}
+  </div>
+
+  <h2>The data</h2>
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr>{% for c in columns %}<th>{{ c }}</th>{% endfor %}</tr>
+      </thead>
+      <tbody>
+        {% for r in rows %}
+        <tr>{% for c in columns %}<td>{{ r[c] }}</td>{% endfor %}</tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+  <footer>
+    <p><strong>Last updated {{ meta.updated }}.</strong> {{ meta.rows }} records.</p>
+    <p>Source: <a href="{{ meta.source_url }}">{{ meta.source_name }}</a>. {{ cfg.method_note }}</p>
+    <p>Compiled by {{ cfg.author }}.</p>
+    <a class="dl" href="data.csv" download>Download the raw data (CSV)</a>
+  </footer>
+
+</div>
+</body>
+</html>

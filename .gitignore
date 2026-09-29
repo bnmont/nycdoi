@@ -1,0 +1,17 @@
+# Secrets — never commit these
+.env
+.env.*
+*.pem
+*.key
+credentials.json
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+
+# Local scratch
+data/raw/
+*.local.*
+.DS_Store

@@ -1,0 +1,63 @@
+name: Update data and publish
+
+on:
+  schedule:
+    # 10:37 UTC — always UTC, ignores daylight saving.
+    # Odd minute on purpose: the top of the hour is congested.
+    - cron: "37 10 * * *"
+  workflow_dispatch:        # gives you a Run button under the Actions tab
+  push:
+    branches: [main]
+    paths-ignore: ["README.md", "docs/**"]
+
+permissions:
+  contents: write           # commit the refreshed data back
+  pages: write              # publish the site
+  id-token: write
+
+concurrency:
+  group: update-and-publish
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - run: pip install -r requirements.txt
+
+      - name: Run the pipeline
+        env:
+          # Only needed if your pipeline calls an API. Set it under
+          # Settings > Secrets and variables > Actions.
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PYTHONUNBUFFERED: "1"
+        run: python pipeline/run_update.py
+
+      - name: Commit refreshed data and site
+        run: |
+          git config user.name "data-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git pull --rebase --autostash origin main
+          git add data site
+          git diff --cached --quiet || git commit -m "Update $(date -u +%F)"
+          git push
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

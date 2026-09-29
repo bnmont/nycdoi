@@ -1,0 +1,14 @@
+{
+  "title": "Project title goes here",
+  "headline": "The one sentence someone should remember",
+  "description": "One sentence, under 160 characters, for search results and link previews.",
+  "site_url": "https://example.manhattan.institute",
+  "source_name": "Name of the dataset",
+  "source_url": "https://example.org/the-dataset",
+  "method_note": "What was counted, what was excluded, and what these numbers cannot show.",
+  "author": "Your name",
+  "accent": "#14366b",
+  "source_data_url": null,
+  "value_column": "value",
+  "label_column": "label"
+}

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Project title goes here</title>
+<meta name="description" content="One sentence, under 160 characters, for search results and link previews.">
+<link rel="canonical" href="https://example.manhattan.institute/">
+
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://example.manhattan.institute/">
+<meta property="og:title" content="The one sentence someone should remember">
+<meta property="og:description" content="One sentence, under 160 characters, for search results and link previews.">
+<meta property="og:image" content="https://example.manhattan.institute/preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+
+<style>
+  :root{
+    --accent: #14366b;
+    --paper:#fff; --ink:#111; --ink-2:#56544e; --rule:#e2e0d9; --bar:#e8e6df;
+    color-scheme: light dark;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{ --paper:#12121a; --ink:#f0eee8; --ink-2:#a8a49a; --rule:#2e2d35; --bar:#24242e; }
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font: 17px/1.55 ui-serif, Georgia, "Times New Roman", serif;
+  }
+  .wrap{max-width:52rem; margin:0 auto; padding:3rem 1.25rem 5rem}
+  header{border-bottom:2px solid var(--ink); padding-bottom:1rem; margin-bottom:2rem}
+  h1{font-size:clamp(1.8rem,5vw,2.6rem); line-height:1.1; margin:0 0 .5rem}
+  .standfirst{margin:0; color:var(--ink-2); max-width:34rem}
+  h2{font-size:1.2rem; margin:2.5rem 0 .75rem}
+  a{color:var(--accent)}
+  @media (prefers-color-scheme: dark){ a{color:#9fc0f2} }
+
+  .chart{margin:1.5rem 0; display:grid; gap:.4rem}
+  .row{display:grid; grid-template-columns:minmax(6rem,10rem) 1fr auto; gap:.6rem; align-items:center}
+  .row .name{font-size:.9rem; color:var(--ink-2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+  .track{background:var(--bar); height:1.4rem; position:relative}
+  .fill{background:var(--accent); height:100%}
+  .num{font-variant-numeric:tabular-nums; font-size:.9rem}
+
+  .scroll{overflow-x:auto; -webkit-overflow-scrolling:touch}
+  table{border-collapse:collapse; width:100%; font-size:.92rem; min-width:30rem}
+  th,td{text-align:left; padding:.5rem .7rem; border-bottom:1px solid var(--rule)}
+  th{font-size:.78rem; text-transform:uppercase; letter-spacing:.06em; color:var(--ink-2)}
+  td:not(:first-child){font-variant-numeric:tabular-nums}
+
+  footer{margin-top:3.5rem; border-top:1px solid var(--rule); padding-top:1rem; font-size:.88rem; color:var(--ink-2)}
+  footer p{margin:.4rem 0; max-width:34rem}
+  .dl{display:inline-block; margin-top:.5rem; font-size:.9rem}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <h1>The one sentence someone should remember</h1>
+    <p class="standfirst">One sentence, under 160 characters, for search results and link previews.</p>
+  </header>
+
+  <h2>Value by label</h2>
+  <div class="chart">
+    
+    <div class="row">
+      <span class="name">California</span>
+      <span class="track"><span class="fill" style="width: 100.0%"></span></span>
+      <span class="num">1,204</span>
+    </div>
+    
+    <div class="row">
+      <span class="name">Florida</span>
+      <span class="track"><span class="fill" style="width: 81.6%"></span></span>
+      <span class="num">982</span>
+    </div>
+    
+    <div class="row">
+      <span class="name">Georgia</span>
+      <span class="track"><span class="fill" style="width: 42.4%"></span></span>
+      <span class="num">511</span>
+    </div>
+    
+    <div class="row">
+      <span class="name">Arizona</span>
+      <span class="track"><span class="fill" style="width: 26.4%"></span></span>
+      <span class="num">318</span>
+    </div>
+    
+    <div class="row">
+      <span class="name">Colorado</span>
+      <span class="track"><span class="fill" style="width: 22.0%"></span></span>
+      <span class="num">265</span>
+    </div>
+    
+    <div class="row">
+      <span class="name">Alabama</span>
+      <span class="track"><span class="fill" style="width: 11.8%"></span></span>
+      <span class="num">142</span>
+    </div>
+    
+    <div class="row">
+      <span class="name">Connecticut</span>
+      <span class="track"><span class="fill" style="width: 9.8%"></span></span>
+      <span class="num">118</span>
+    </div>
+    
+    <div class="row">
+      <span class="name">Arkansas</span>
+      <span class="track"><span class="fill" style="width: 8.1%"></span></span>
+      <span class="num">97</span>
+    </div>
+    
+    <div class="row">
+      <span class="name">Delaware</span>
+      <span class="track"><span class="fill" style="width: 3.7%"></span></span>
+      <span class="num">44</span>
+    </div>
+    
+    <div class="row">
+      <span class="name">Alaska</span>
+      <span class="track"><span class="fill" style="width: 2.6%"></span></span>
+      <span class="num">31</span>
+    </div>
+    
+  </div>
+
+  <h2>The data</h2>
+  <div class="scroll">
+    <table>
+      <thead>
+        <tr><th>label</th><th>value</th><th>year</th></tr>
+      </thead>
+      <tbody>
+        
+        <tr><td>California</td><td>1204</td><td>2025</td></tr>
+        
+        <tr><td>Florida</td><td>982</td><td>2025</td></tr>
+        
+        <tr><td>Georgia</td><td>511</td><td>2025</td></tr>
+        
+        <tr><td>Arizona</td><td>318</td><td>2025</td></tr>
+        
+        <tr><td>Colorado</td><td>265</td><td>2025</td></tr>
+        
+        <tr><td>Alabama</td><td>142</td><td>2025</td></tr>
+        
+        <tr><td>Connecticut</td><td>118</td><td>2025</td></tr>
+        
+        <tr><td>Arkansas</td><td>97</td><td>2025</td></tr>
+        
+        <tr><td>Delaware</td><td>44</td><td>2025</td></tr>
+        
+        <tr><td>Alaska</td><td>31</td><td>2025</td></tr>
+        
+      </tbody>
+    </table>
+  </div>
+
+  <footer>
+    <p><strong>Last updated September 29, 2026.</strong> 10 records.</p>
+    <p>Source: <a href="https://example.org/the-dataset">Name of the dataset</a>. What was counted, what was excluded, and what these numbers cannot show.</p>
+    <p>Compiled by Your name.</p>
+    <a class="dl" href="data.csv" download>Download the raw data (CSV)</a>
+  </footer>
+
+</div>
+</body>
+</html>
