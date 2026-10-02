@@ -1,6 +1,6 @@
 {
   "rows": 618,
-  "previous_rows": 617,
+  "previous_rows": 618,
   "enforcement_actions": 500,
   "other_records": 118,
   "categories": 22,
@@ -9,8 +9,8 @@
   "with_amount_recouped": 97,
   "first_date": "2016-09-07",
   "last_date": "2026-09-30",
-  "updated": "October 01, 2026",
-  "updated_iso": "2026-10-01T17:07:35+00:00",
+  "updated": "October 02, 2026",
+  "updated_iso": "2026-10-02T16:21:04+00:00",
   "source_name": "NYC Department of Investigation press release archive",
   "source_url": "https://www.nyc.gov/site/doi/newsroom/press-release-archives.page"
 }
