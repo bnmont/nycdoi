@@ -1,16 +1,16 @@
 {
-  "rows": 623,
+  "rows": 624,
   "previous_rows": 623,
-  "enforcement_actions": 505,
+  "enforcement_actions": 506,
   "other_records": 118,
   "categories": 22,
   "uncategorised": 42,
-  "with_amount_stolen": 191,
+  "with_amount_stolen": 192,
   "with_amount_recouped": 99,
   "first_date": "2016-09-07",
-  "last_date": "2026-11-02",
-  "updated": "November 04, 2026",
-  "updated_iso": "2026-11-04T18:11:54+00:00",
+  "last_date": "2026-11-05",
+  "updated": "November 05, 2026",
+  "updated_iso": "2026-11-05T18:13:12+00:00",
   "source_name": "NYC Department of Investigation press release archive",
   "source_url": "https://www.nyc.gov/site/doi/newsroom/press-release-archives.page"
 }
