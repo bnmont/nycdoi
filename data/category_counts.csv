@@ -1,23 +1,23 @@
-category,releases,dollars_stolen
-"Fraud, other",87,130691176.0
-Theft,66,22068599.0
-Bribery and kickbacks,44,6905600.0
-Uncategorised,42,57115000.0
-Contraband smuggling,40,127142.0
-Contracting and procurement fraud,30,18600032.0
-Forgery and fake credentials,29,185280.0
-Assault and cover-ups,28,10700000.0
-Deaths and reckless endangerment,23,2054996.0
-Benefits fraud,23,2312100.0
-Racketeering and violent crime,18,10000.0
-Sexual misconduct,14,0.0
-Workers' compensation fraud,11,0.0
-Payroll and wage abuse,9,3277224.0
-Embezzlement,8,8500000.0
-Drug offenses,8,0.0
-Tenant harassment and eviction,7,118000.0
-Obstruction and tampering,6,93400.0
-Unlicensed operation,5,14000.0
-Conflict of interest,4,4724.0
-Extortion,4,65000.0
-Tax offenses,3,10925213.0
+category,releases,dollars_stolen,releases_with_amount,share
+"Fraud, other",87,130691176.0,48,17.1
+Theft,66,22068599.0,53,13.0
+Bribery and kickbacks,44,6905600.0,14,8.6
+Uncategorised,42,57115000.0,7,8.3
+Contraband smuggling,40,127142.0,8,7.9
+Contracting and procurement fraud,30,18600032.0,11,5.9
+Forgery and fake credentials,29,185280.0,4,5.7
+Assault and cover-ups,28,10700000.0,5,5.5
+Deaths and reckless endangerment,23,2054996.0,3,4.5
+Benefits fraud,23,2312100.0,14,4.5
+Racketeering and violent crime,18,10000.0,1,3.5
+Sexual misconduct,14,0.0,0,2.8
+Workers' compensation fraud,11,0.0,0,2.2
+Payroll and wage abuse,9,3277224.0,7,1.8
+Embezzlement,8,8500000.0,7,1.6
+Drug offenses,8,0.0,0,1.6
+Tenant harassment and eviction,7,118000.0,2,1.4
+Obstruction and tampering,6,93400.0,3,1.2
+Unlicensed operation,5,14000.0,1,1.0
+Conflict of interest,4,4724.0,1,0.8
+Extortion,4,65000.0,2,0.8
+Tax offenses,3,10925213.0,2,0.6

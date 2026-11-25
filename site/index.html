@@ -24,10 +24,18 @@
   :root{
     --accent: #14366b;
     --paper:#fff; --ink:#111; --ink-2:#56544e; --rule:#e2e0d9; --bar:#e8e6df;
+    /* The "Uncategorised" bucket is an absence of information, not an
+       offense, so its bar recedes instead of competing with the real ones. */
+    --bar-null:#9b968b;
     color-scheme: light dark;
   }
   @media (prefers-color-scheme: dark){
-    :root{ --paper:#12121a; --ink:#f0eee8; --ink-2:#a8a49a; --rule:#2e2d35; --bar:#24242e; }
+    :root{
+      --paper:#12121a; --ink:#f0eee8; --ink-2:#a8a49a; --rule:#2e2d35; --bar:#24242e;
+      /* Dark mode gets its own accent step. The light one is 1.29:1 here. */
+      --accent: #5b8ede;
+      --bar-null:#7a7a88;
+    }
   }
   *{box-sizing:border-box}
   body{
@@ -55,12 +63,25 @@
 
   /* One series, one hue: bars carry magnitude, never identity. */
   .chart{margin:1.25rem 0; display:grid; gap:2px}
-  .row{display:grid; grid-template-columns:minmax(7rem,13rem) 1fr auto; gap:.6rem; align-items:center}
+  .row{
+    display:grid; gap:.6rem; align-items:center;
+    grid-template-columns:minmax(7rem,13rem) 1fr 2.6rem 3.2rem;
+  }
   .row .name{font-size:.9rem; color:var(--ink-2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
-  .track{background:var(--bar); height:1.35rem; position:relative; border-radius:2px}
-  .fill{background:var(--accent); height:100%; border-radius:0 4px 4px 0; min-width:2px}
-  .row:hover .fill{filter:brightness(1.12)}
-  .num{font-variant-numeric:tabular-nums; font-size:.9rem; min-width:2.5rem; text-align:right}
+  /* display:block matters. These are spans, and width/height are ignored on
+     inline elements, so without it every bar renders zero pixels wide and
+     the chart silently shows nothing but empty tracks. */
+  .track{display:block; background:var(--bar); height:1.35rem; position:relative; border-radius:2px}
+  .fill{display:block; background:var(--accent); height:100%; border-radius:0 4px 4px 0; min-width:3px}
+  .row.null .fill{background:var(--bar-null)}
+  .row:hover .fill{filter:brightness(1.15)}
+  .row:hover .name{color:var(--ink)}
+  .num{font-variant-numeric:tabular-nums; font-size:.9rem; text-align:right}
+  .pct{font-variant-numeric:tabular-nums; font-size:.8rem; text-align:right; color:var(--ink-2)}
+  @media (max-width:30rem){
+    .row{grid-template-columns:minmax(5.5rem,8rem) 1fr 2.2rem}
+    .pct{display:none}
+  }
 
   .scroll{overflow-x:auto; -webkit-overflow-scrolling:touch; max-height:34rem; overflow-y:auto}
   table{border-collapse:collapse; width:100%; font-size:.88rem; min-width:44rem}
@@ -122,139 +143,190 @@
   </p>
   <div class="chart">
     
-    <div class="row" title="Fraud, other: 87 enforcement actions">
+    <div class="row"
+         title="Fraud, other — 87 of 509 enforcement actions (17.1%); $130.7M stolen across the 48 that state a figure">
       <span class="name">Fraud, other</span>
       <span class="track"><span class="fill" style="width: 100.0%"></span></span>
       <span class="num">87</span>
+      <span class="pct">17.1%</span>
     </div>
     
-    <div class="row" title="Theft: 66 enforcement actions">
+    <div class="row"
+         title="Theft — 66 of 509 enforcement actions (13.0%); $22.1M stolen across the 53 that state a figure">
       <span class="name">Theft</span>
       <span class="track"><span class="fill" style="width: 75.9%"></span></span>
       <span class="num">66</span>
+      <span class="pct">13.0%</span>
     </div>
     
-    <div class="row" title="Bribery and kickbacks: 44 enforcement actions">
+    <div class="row"
+         title="Bribery and kickbacks — 44 of 509 enforcement actions (8.6%); $6.9M stolen across the 14 that state a figure">
       <span class="name">Bribery and kickbacks</span>
       <span class="track"><span class="fill" style="width: 50.6%"></span></span>
       <span class="num">44</span>
+      <span class="pct">8.6%</span>
     </div>
     
-    <div class="row" title="Uncategorised: 42 enforcement actions">
+    <div class="row null"
+         title="Uncategorised — 42 of 509 enforcement actions (8.3%); $57.1M stolen across the 7 that state a figure">
       <span class="name">Uncategorised</span>
       <span class="track"><span class="fill" style="width: 48.3%"></span></span>
       <span class="num">42</span>
+      <span class="pct">8.3%</span>
     </div>
     
-    <div class="row" title="Contraband smuggling: 40 enforcement actions">
+    <div class="row"
+         title="Contraband smuggling — 40 of 509 enforcement actions (7.9%); $127.1K stolen across the 8 that state a figure">
       <span class="name">Contraband smuggling</span>
       <span class="track"><span class="fill" style="width: 46.0%"></span></span>
       <span class="num">40</span>
+      <span class="pct">7.9%</span>
     </div>
     
-    <div class="row" title="Contracting and procurement fraud: 30 enforcement actions">
+    <div class="row"
+         title="Contracting and procurement fraud — 30 of 509 enforcement actions (5.9%); $18.6M stolen across the 11 that state a figure">
       <span class="name">Contracting and procurement fraud</span>
       <span class="track"><span class="fill" style="width: 34.5%"></span></span>
       <span class="num">30</span>
+      <span class="pct">5.9%</span>
     </div>
     
-    <div class="row" title="Forgery and fake credentials: 29 enforcement actions">
+    <div class="row"
+         title="Forgery and fake credentials — 29 of 509 enforcement actions (5.7%); $185.3K stolen across the 4 that state a figure">
       <span class="name">Forgery and fake credentials</span>
       <span class="track"><span class="fill" style="width: 33.3%"></span></span>
       <span class="num">29</span>
+      <span class="pct">5.7%</span>
     </div>
     
-    <div class="row" title="Assault and cover-ups: 28 enforcement actions">
+    <div class="row"
+         title="Assault and cover-ups — 28 of 509 enforcement actions (5.5%); $10.7M stolen across the 5 that state a figure">
       <span class="name">Assault and cover-ups</span>
       <span class="track"><span class="fill" style="width: 32.2%"></span></span>
       <span class="num">28</span>
+      <span class="pct">5.5%</span>
     </div>
     
-    <div class="row" title="Deaths and reckless endangerment: 23 enforcement actions">
+    <div class="row"
+         title="Deaths and reckless endangerment — 23 of 509 enforcement actions (4.5%); $2.1M stolen across the 3 that state a figure">
       <span class="name">Deaths and reckless endangerment</span>
       <span class="track"><span class="fill" style="width: 26.4%"></span></span>
       <span class="num">23</span>
+      <span class="pct">4.5%</span>
     </div>
     
-    <div class="row" title="Benefits fraud: 23 enforcement actions">
+    <div class="row"
+         title="Benefits fraud — 23 of 509 enforcement actions (4.5%); $2.3M stolen across the 14 that state a figure">
       <span class="name">Benefits fraud</span>
       <span class="track"><span class="fill" style="width: 26.4%"></span></span>
       <span class="num">23</span>
+      <span class="pct">4.5%</span>
     </div>
     
-    <div class="row" title="Racketeering and violent crime: 18 enforcement actions">
+    <div class="row"
+         title="Racketeering and violent crime — 18 of 509 enforcement actions (3.5%); $10K stolen across the 1 that state a figure">
       <span class="name">Racketeering and violent crime</span>
       <span class="track"><span class="fill" style="width: 20.7%"></span></span>
       <span class="num">18</span>
+      <span class="pct">3.5%</span>
     </div>
     
-    <div class="row" title="Sexual misconduct: 14 enforcement actions">
+    <div class="row"
+         title="Sexual misconduct — 14 of 509 enforcement actions (2.8%); $0 stolen across the 0 that state a figure">
       <span class="name">Sexual misconduct</span>
       <span class="track"><span class="fill" style="width: 16.1%"></span></span>
       <span class="num">14</span>
+      <span class="pct">2.8%</span>
     </div>
     
-    <div class="row" title="Workers' compensation fraud: 11 enforcement actions">
+    <div class="row"
+         title="Workers' compensation fraud — 11 of 509 enforcement actions (2.2%); $0 stolen across the 0 that state a figure">
       <span class="name">Workers' compensation fraud</span>
       <span class="track"><span class="fill" style="width: 12.6%"></span></span>
       <span class="num">11</span>
+      <span class="pct">2.2%</span>
     </div>
     
-    <div class="row" title="Payroll and wage abuse: 9 enforcement actions">
+    <div class="row"
+         title="Payroll and wage abuse — 9 of 509 enforcement actions (1.8%); $3.3M stolen across the 7 that state a figure">
       <span class="name">Payroll and wage abuse</span>
       <span class="track"><span class="fill" style="width: 10.3%"></span></span>
       <span class="num">9</span>
+      <span class="pct">1.8%</span>
     </div>
     
-    <div class="row" title="Embezzlement: 8 enforcement actions">
+    <div class="row"
+         title="Embezzlement — 8 of 509 enforcement actions (1.6%); $8.5M stolen across the 7 that state a figure">
       <span class="name">Embezzlement</span>
       <span class="track"><span class="fill" style="width: 9.2%"></span></span>
       <span class="num">8</span>
+      <span class="pct">1.6%</span>
     </div>
     
-    <div class="row" title="Drug offenses: 8 enforcement actions">
+    <div class="row"
+         title="Drug offenses — 8 of 509 enforcement actions (1.6%); $0 stolen across the 0 that state a figure">
       <span class="name">Drug offenses</span>
       <span class="track"><span class="fill" style="width: 9.2%"></span></span>
       <span class="num">8</span>
+      <span class="pct">1.6%</span>
     </div>
     
-    <div class="row" title="Tenant harassment and eviction: 7 enforcement actions">
+    <div class="row"
+         title="Tenant harassment and eviction — 7 of 509 enforcement actions (1.4%); $118K stolen across the 2 that state a figure">
       <span class="name">Tenant harassment and eviction</span>
       <span class="track"><span class="fill" style="width: 8.0%"></span></span>
       <span class="num">7</span>
+      <span class="pct">1.4%</span>
     </div>
     
-    <div class="row" title="Obstruction and tampering: 6 enforcement actions">
+    <div class="row"
+         title="Obstruction and tampering — 6 of 509 enforcement actions (1.2%); $93.4K stolen across the 3 that state a figure">
       <span class="name">Obstruction and tampering</span>
       <span class="track"><span class="fill" style="width: 6.9%"></span></span>
       <span class="num">6</span>
+      <span class="pct">1.2%</span>
     </div>
     
-    <div class="row" title="Unlicensed operation: 5 enforcement actions">
+    <div class="row"
+         title="Unlicensed operation — 5 of 509 enforcement actions (1.0%); $14K stolen across the 1 that state a figure">
       <span class="name">Unlicensed operation</span>
       <span class="track"><span class="fill" style="width: 5.7%"></span></span>
       <span class="num">5</span>
+      <span class="pct">1.0%</span>
     </div>
     
-    <div class="row" title="Conflict of interest: 4 enforcement actions">
+    <div class="row"
+         title="Conflict of interest — 4 of 509 enforcement actions (0.8%); $4.7K stolen across the 1 that state a figure">
       <span class="name">Conflict of interest</span>
       <span class="track"><span class="fill" style="width: 4.6%"></span></span>
       <span class="num">4</span>
+      <span class="pct">0.8%</span>
     </div>
     
-    <div class="row" title="Extortion: 4 enforcement actions">
+    <div class="row"
+         title="Extortion — 4 of 509 enforcement actions (0.8%); $65K stolen across the 2 that state a figure">
       <span class="name">Extortion</span>
       <span class="track"><span class="fill" style="width: 4.6%"></span></span>
       <span class="num">4</span>
+      <span class="pct">0.8%</span>
     </div>
     
-    <div class="row" title="Tax offenses: 3 enforcement actions">
+    <div class="row"
+         title="Tax offenses — 3 of 509 enforcement actions (0.6%); $10.9M stolen across the 2 that state a figure">
       <span class="name">Tax offenses</span>
       <span class="track"><span class="fill" style="width: 3.4%"></span></span>
       <span class="num">3</span>
+      <span class="pct">0.6%</span>
     </div>
     
   </div>
+  <p class="note">
+    Bars are counts of releases; the percentage is each category's share of all
+    509 enforcement actions. Hover a bar for the
+    dollars attached to it. <span style="color:var(--bar-null)">&#9632;</span>
+    Uncategorised is greyed because it is missing information, not an offense: those
+    42 titles name no charge.
+  </p>
 
   <h2>Every release</h2>
   <p class="note">
@@ -5933,7 +6005,7 @@
   </div>
 
   <footer>
-    <p><strong>Last updated November 24, 2026.</strong>
+    <p><strong>Last updated November 25, 2026.</strong>
        628 records — 509 enforcement
        actions and 119 reports, statements and remarks.
        193 state an amount stolen; 99 state an amount recovered.</p>
