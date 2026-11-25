@@ -24,10 +24,18 @@
   :root{
     --accent: {{ cfg.accent }};
     --paper:#fff; --ink:#111; --ink-2:#56544e; --rule:#e2e0d9; --bar:#e8e6df;
+    /* The "Uncategorised" bucket is an absence of information, not an
+       offense, so its bar recedes instead of competing with the real ones. */
+    --bar-null:#9b968b;
     color-scheme: light dark;
   }
   @media (prefers-color-scheme: dark){
-    :root{ --paper:#12121a; --ink:#f0eee8; --ink-2:#a8a49a; --rule:#2e2d35; --bar:#24242e; }
+    :root{
+      --paper:#12121a; --ink:#f0eee8; --ink-2:#a8a49a; --rule:#2e2d35; --bar:#24242e;
+      /* Dark mode gets its own accent step. The light one is 1.29:1 here. */
+      --accent: {{ cfg.accent_dark }};
+      --bar-null:#7a7a88;
+    }
   }
   *{box-sizing:border-box}
   body{
@@ -55,12 +63,25 @@
 
   /* One series, one hue: bars carry magnitude, never identity. */
   .chart{margin:1.25rem 0; display:grid; gap:2px}
-  .row{display:grid; grid-template-columns:minmax(7rem,13rem) 1fr auto; gap:.6rem; align-items:center}
+  .row{
+    display:grid; gap:.6rem; align-items:center;
+    grid-template-columns:minmax(7rem,13rem) 1fr 2.6rem 3.2rem;
+  }
   .row .name{font-size:.9rem; color:var(--ink-2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
-  .track{background:var(--bar); height:1.35rem; position:relative; border-radius:2px}
-  .fill{background:var(--accent); height:100%; border-radius:0 4px 4px 0; min-width:2px}
-  .row:hover .fill{filter:brightness(1.12)}
-  .num{font-variant-numeric:tabular-nums; font-size:.9rem; min-width:2.5rem; text-align:right}
+  /* display:block matters. These are spans, and width/height are ignored on
+     inline elements, so without it every bar renders zero pixels wide and
+     the chart silently shows nothing but empty tracks. */
+  .track{display:block; background:var(--bar); height:1.35rem; position:relative; border-radius:2px}
+  .fill{display:block; background:var(--accent); height:100%; border-radius:0 4px 4px 0; min-width:3px}
+  .row.null .fill{background:var(--bar-null)}
+  .row:hover .fill{filter:brightness(1.15)}
+  .row:hover .name{color:var(--ink)}
+  .num{font-variant-numeric:tabular-nums; font-size:.9rem; text-align:right}
+  .pct{font-variant-numeric:tabular-nums; font-size:.8rem; text-align:right; color:var(--ink-2)}
+  @media (max-width:30rem){
+    .row{grid-template-columns:minmax(5.5rem,8rem) 1fr 2.2rem}
+    .pct{display:none}
+  }
 
   .scroll{overflow-x:auto; -webkit-overflow-scrolling:touch; max-height:34rem; overflow-y:auto}
   table{border-collapse:collapse; width:100%; font-size:.88rem; min-width:44rem}
@@ -122,13 +143,22 @@
   </p>
   <div class="chart">
     {% for r in chart_rows %}
-    <div class="row" title="{{ r[label_col] }}: {{ r[value_col] }} enforcement actions">
+    <div class="row{% if r[label_col] == 'Uncategorised' %} null{% endif %}"
+         title="{{ r[label_col] }} — {{ '{:,}'.format(r[value_col]) }} of {{ '{:,}'.format(meta.enforcement_actions) }} enforcement actions ({{ r.share }}%){% if r.dollars_display %}; {{ r.dollars_display }} stolen across the {{ r.releases_with_amount }} that state a figure{% endif %}">
       <span class="name">{{ r[label_col] }}</span>
       <span class="track"><span class="fill" style="width: {{ (r[value_col] / max_value * 100)|round(1) }}%"></span></span>
       <span class="num">{{ '{:,}'.format(r[value_col]) }}</span>
+      <span class="pct">{{ r.share }}%</span>
     </div>
     {% endfor %}
   </div>
+  <p class="note">
+    Bars are counts of releases; the percentage is each category's share of all
+    {{ '{:,}'.format(meta.enforcement_actions) }} enforcement actions. Hover a bar for the
+    dollars attached to it. <span style="color:var(--bar-null)">&#9632;</span>
+    Uncategorised is greyed because it is missing information, not an offense: those
+    {{ meta.uncategorised }} titles name no charge.
+  </p>
 
   <h2>Every release</h2>
   <p class="note">

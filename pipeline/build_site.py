@@ -40,7 +40,8 @@ def build():
     meta = json.loads((DATA / "meta.json").read_text())
 
     label_col, value_col = cfg["label_column"], cfg["value_column"]
-    chart = counts.sort_values(value_col, ascending=False)
+    chart = counts.sort_values(value_col, ascending=False).copy()
+    chart["dollars_display"] = chart["dollars_stolen"].map(money)
     chart_rows = chart.to_dict(orient="records")
     max_value = int(chart[value_col].max()) if len(chart) else 1
 

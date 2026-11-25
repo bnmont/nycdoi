@@ -7,7 +7,9 @@
   "source_url": "https://www.nyc.gov/site/doi/newsroom/press-release-archives.page",
   "method_note": "Each row is one DOI press release, not one defendant: a release naming five people counts once. Categories are assigned by matching the phrases in the rulebook below against the release title, first match winning, so a case charging both bribery and fraud is filed under bribery alone. Dollar figures are read out of the release PDF and are reported only when the surrounding words identify them as an amount stolen or recovered; salary figures, which DOI states in most enforcement releases, are excluded. Many releases state no figure at all, so the dollar columns are incomplete by nature and should never be summed as a total loss to the city. DOI reports, statements, announcements and press-conference remarks are kept in the data but marked as such, because they are not enforcement actions.",
   "author": "Brittany Montgomery",
+  "_comment_accent": "Two accents, not one. #14366b reads at 9.5:1 on white but only 1.29:1 on the dark background, where the bars all but vanish. Dark mode gets its own step from the same blue rather than an automatic flip.",
   "accent": "#14366b",
+  "accent_dark": "#5b8ede",
 
   "years_back": 10,
   "refresh_months": 3,

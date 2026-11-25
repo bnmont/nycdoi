@@ -201,10 +201,12 @@ def transform():
     counts = (
         actions.groupby("category")
         .agg(releases=("title", "size"),
-             dollars_stolen=("amount_stolen", "sum"))
+             dollars_stolen=("amount_stolen", "sum"),
+             releases_with_amount=("amount_stolen", "count"))
         .reset_index()
         .sort_values("releases", ascending=False)
     )
+    counts["share"] = (counts["releases"] / len(actions) * 100).round(1)
     counts.to_csv(DATA / "category_counts.csv", index=False)
 
     # Carry the last run's row count forward before overwriting meta.json.
